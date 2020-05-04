@@ -1,0 +1,6 @@
+file = open("words.txt", "r")
+words = file.read().splitlines()
+file.close()
+file = open("words.txt", "w")
+file.write(str(words))
+file.close()
