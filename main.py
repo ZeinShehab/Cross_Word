@@ -6,9 +6,9 @@ file = open("words.txt", "r")
 # GLOBAL CONSTANTS
 WIDTH = 18
 HEIGHT = 18
+NWORDS = 10
 CHARS = "abcdefghijklmnopqrstuvwxyz"
 WORDS = file.read().splitlines()
-NWORDS = 10
 
 
 class CrossWord:
@@ -42,8 +42,8 @@ class CrossWord:
     def get_pos(self, u, v, wrd, chc):
         x = random.randint(0, WIDTH - u)
         y = random.randint(0, HEIGHT - v)
-        self.pos = []
 
+        self.pos = []
         self.x = x
         self.y = y
 
