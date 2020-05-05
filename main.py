@@ -52,7 +52,7 @@ class CrossWord:
                 x += 1
             elif chc == 1:
                 y += 1
-
+    # 123
         # for i in pos:
         #     for j in self.tkn_pos:
         #         if i not in j:
