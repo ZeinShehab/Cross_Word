@@ -43,6 +43,9 @@ class CrossWord:
         y = random.randint(0, HEIGHT - v)
         self.pos = []
 
+        self.x = x
+        self.y = y
+
         for _ in wrd:
             self.pos.append([y, x])
             if chc == 0:
@@ -53,8 +56,6 @@ class CrossWord:
         # for i in pos:
         #     for j in self.tkn_pos:
         #         if i not in j:
-        self.x = x
-        self.y = y
 
     def put_wrd(self, x, y, wrd, chc):
         for let in wrd:
@@ -75,16 +76,18 @@ class CrossWord:
 
         for word in self.chsn_wrds:
             chc = random.randint(0, 1)
+            wrd_len = len(word)
 
             if chc == 0:
-                self.get_pos(len(word), 1, word, chc)
+                self.get_pos(wrd_len, 1, word, chc)
 
                 print(f"Word: {word} | Row: {self.y} | Column: {self.x} [Horizontal]")
             elif chc == 1:
-                self.get_pos(1, len(word), word, chc)
+                self.get_pos(1, wrd_len, word, chc)
 
-                print(f"Word: {word} | Row: {self.y} | Column: {self.x} [Vertical]")
+                print(f"Word: {word} | Row: {self.y} | Column: {self.x} [Vertical] ")
 
+            print(f"Position: {self.pos}\n")
             self.put_wrd(self.x, self.y, word, chc)
 
         self.format_grid()
