@@ -8,7 +8,7 @@ WIDTH = 18
 HEIGHT = 18
 CHARS = "abcdefghijklmnopqrstuvwxyz"
 WORDS = file.read().splitlines()
-NWORDS = 5
+NWORDS = 10
 
 
 class CrossWord:
@@ -25,7 +25,7 @@ class CrossWord:
         for _ in range(WIDTH):
             for _ in range(HEIGHT):
                 letters.append(random.choice(CHARS))
-        self.grid = np.array(letters).reshape(WIDTH, HEIGHT)
+        self.grid = np.array(letters).reshape(HEIGHT, WIDTH)
 
     def format_grid(self):
         self.grid = str(self.grid).replace("[", " ").replace("]", " ").replace("'", "")
