@@ -47,15 +47,11 @@ class CrossWord:
         self.y = y
 
         for _ in wrd:
-            self.pos.append([y, x])
+            self.pos.append([x, y])
             if chc == 0:
                 x += 1
             elif chc == 1:
                 y += 1
-    # 123
-        # for i in pos:
-        #     for j in self.tkn_pos:
-        #         if i not in j:
 
     def put_wrd(self, x, y, wrd, chc):
         for let in wrd:
@@ -65,8 +61,8 @@ class CrossWord:
             elif chc == 1:
                 y += 1
 
-    def output(self, filename):
-        f = open(filename, "w+")
+    def output(self, filename, mode):
+        f = open(filename, mode)
         f.write(f"{self.grid} \n\n {self.chsn_wrds}")
         f.close()
 
@@ -81,18 +77,18 @@ class CrossWord:
             if chc == 0:
                 self.get_pos(wrd_len, 1, word, chc)
 
-                print(f"Word: {word} | Row: {self.y} | Column: {self.x} [Horizontal]")
+                print(f"Word: {word} | X={self.x}+ | Y={self.y} [Horizontal]")
             elif chc == 1:
                 self.get_pos(1, wrd_len, word, chc)
 
-                print(f"Word: {word} | Row: {self.y} | Column: {self.x} [Vertical] ")
+                print(f"Word: {word} | X={self.x} | Y={self.y}+ [Vertical] ")
 
             print(f"Position: {self.pos}\n")
             self.put_wrd(self.x, self.y, word, chc)
 
         self.format_grid()
         self.format_wrds()
-        self.output("grid.txt")
+        self.output("grid.txt", "w+")
 
 
 game = CrossWord()
