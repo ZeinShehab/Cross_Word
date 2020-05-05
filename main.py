@@ -15,9 +15,10 @@ class CrossWord:
     def __init__(self):
         self.chsn_wrds = []
         self.tkn_pos = []
-        self.grid = np.array([])
-        self.x = 0
-        self.y = 0
+        self.grid = None
+        self.pos = None
+        self.x = None
+        self.y = None
 
     def get_grid(self):
         letters = []
@@ -77,11 +78,11 @@ class CrossWord:
             if chc == 0:
                 self.get_pos(wrd_len, 1, word, chc)
 
-                print(f"Word: {word} | X={self.x}+ | Y={self.y} [Horizontal]")
+                print(f"Word: {word} | Len={wrd_len} | X={self.x}+ | Y={self.y} | [Horizontal]")
             elif chc == 1:
                 self.get_pos(1, wrd_len, word, chc)
 
-                print(f"Word: {word} | X={self.x} | Y={self.y}+ [Vertical] ")
+                print(f"Word: {word} | Len={wrd_len} | X={self.x} | Y={self.y}+ [Vertical] ")
 
             print(f"Position: {self.pos}\n")
             self.put_wrd(self.x, self.y, word, chc)
