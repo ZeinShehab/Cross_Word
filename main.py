@@ -14,6 +14,7 @@ WORDS = file.read().splitlines()
 class CrossWord:
     def __init__(self):
         self.chsn_wrds = []
+        self.tkn_pos = []
         self.grid = np.array([])
         self.x = 0
         self.y = 0
@@ -45,7 +46,6 @@ class CrossWord:
     def get_pos(self, u, v, wrd, chc):
         x = random.randint(0, WIDTH - u)
         y = random.randint(0, HEIGHT - v)
-        tkn_pos = []
 
         self.pos = []
         self.x = x
@@ -58,8 +58,8 @@ class CrossWord:
             elif chc == 1:
                 y += 1
 
-        if len(tkn_pos) > 0:
-            for i in tkn_pos:
+        if len(self.tkn_pos) > 0:
+            for i in self.tkn_pos:
                 for j in i:
                     for k in self.pos:
                         if k[0] == j[0] and k[1] == j[1]:
@@ -68,7 +68,7 @@ class CrossWord:
                             self.get_pos(u, v, wrd, chc)
 
         else:
-            tkn_pos.append(self.pos)
+            self.tkn_pos.append(self.pos)
 
     def put_wrd(self, x, y, wrd, chc):
         for let in wrd:
