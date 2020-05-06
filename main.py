@@ -6,7 +6,7 @@ file = open("words.txt", "r")
 # GLOBAL CONSTANTS
 WIDTH = 18
 HEIGHT = 18
-NWORDS = 10
+NWORDS = 5
 CHARS = "abcdefghijklmnopqrstuvwxyz"
 WORDS = file.read().splitlines()
 
@@ -16,9 +16,10 @@ class CrossWord:
         self.chsn_wrds = []
         self.tkn_pos = []
         self.grid = np.array([])
+        self.run = True
         self.x = 0
         self.y = 0
-        self.pos = None
+        self.pos = []
         self.old_pos = None
         self.dup = None
 
@@ -44,13 +45,10 @@ class CrossWord:
         self.chsn_wrds = str(self.chsn_wrds[:]).replace("'", "").replace("[", "").replace("]", "")
 
     def get_pos(self, u, v, wrd, chc):
-        x = random.randint(0, WIDTH - u)
-        y = random.randint(0, HEIGHT - v)
+        self.x = random.randint(0, WIDTH - u)
+        self.y = random.randint(0, HEIGHT - v)
 
-        self.pos = []
-        self.x = x
-        self.y = y
-
+        x, y = self.x, self.y
         for _ in wrd:
             self.pos.append([x, y])
             if chc == 0:
@@ -58,21 +56,12 @@ class CrossWord:
             elif chc == 1:
                 y += 1
 
-        if len(self.tkn_pos) > 0:
-            for i in self.tkn_pos:
-                for j in i:
-                    for k in self.pos:
-                        if k[0] == j[0] and k[1] == j[1]:
-                            self.dup = [k[0], k[1]]
-                            self.old_pos = self.pos
-                            self.get_pos(u, v, wrd, chc)
-
-        else:
-            self.tkn_pos.append(self.pos)
+    def collision(self):
+        pass
 
     def put_wrd(self, x, y, wrd, chc):
         for let in wrd:
-            self.grid[y, x] = let
+            self.grid[x, y] = let
             if chc == 0:
                 x += 1
             elif chc == 1:
@@ -115,6 +104,7 @@ class CrossWord:
         self.format_wrds()
         self.save_grid("grid.txt", "w+")
         self.save_grid_data("grid_data.txt", "w+", data)
+        print(self.tkn_pos)
 
 
 game = CrossWord()
