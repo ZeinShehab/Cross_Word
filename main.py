@@ -14,9 +14,10 @@ WORDS = file.read().splitlines()
 class CrossWord:
     def __init__(self):
         self.chsn_wrds = []
-        self.tkn_pos = []
         self.grid = None
         self.pos = None
+        self.old_pos = None
+        self.dup = None
         self.x = None
         self.y = None
 
@@ -31,10 +32,12 @@ class CrossWord:
         self.grid = str(self.grid).replace("[", " ").replace("]", " ").replace("'", "")
 
     def get_wrd(self):
+        tkn_wrds = []
         while len(self.chsn_wrds) < NWORDS:
             wrd = random.choice(WORDS)
-            if len(wrd) < WIDTH and HEIGHT:
+            if (len(wrd) < WIDTH and HEIGHT) and (wrd not in tkn_wrds):
                 self.chsn_wrds.append(wrd)
+                tkn_wrds.append(wrd)
 
     def format_wrds(self):
         self.chsn_wrds = str(self.chsn_wrds[:]).replace("'", "").replace("[", "").replace("]", "")
@@ -42,6 +45,7 @@ class CrossWord:
     def get_pos(self, u, v, wrd, chc):
         x = random.randint(0, WIDTH - u)
         y = random.randint(0, HEIGHT - v)
+        tkn_pos = []
 
         self.pos = []
         self.x = x
@@ -54,6 +58,18 @@ class CrossWord:
             elif chc == 1:
                 y += 1
 
+        if len(tkn_pos) > 0:
+            for i in tkn_pos:
+                for j in i:
+                    for k in self.pos:
+                        if k[0] == j[0] and k[1] == j[1]:
+                            self.dup = [k[0], k[1]]
+                            self.old_pos = self.pos
+                            self.get_pos(u, v, wrd, chc)
+
+        else:
+            tkn_pos.append(self.pos)
+
     def put_wrd(self, x, y, wrd, chc):
         for let in wrd:
             self.grid[y, x] = let
@@ -62,14 +78,21 @@ class CrossWord:
             elif chc == 1:
                 y += 1
 
-    def output(self, filename, mode):
+    def save_grid(self, filename, mode):
         f = open(filename, mode)
         f.write(f"{self.grid} \n\n {self.chsn_wrds}")
+        f.close()
+
+    @staticmethod
+    def save_grid_data(filename, mode, data):
+        f = open(filename, mode)
+        f.write(data)
         f.close()
 
     def main(self):
         self.get_grid()
         self.get_wrd()
+        data = ""
 
         for word in self.chsn_wrds:
             chc = random.randint(0, 1)
@@ -78,18 +101,20 @@ class CrossWord:
             if chc == 0:
                 self.get_pos(wrd_len, 1, word, chc)
 
-                print(f"Word: {word} | Len={wrd_len} | X={self.x}+ | Y={self.y} | [Horizontal]")
+                data += f"Word: {word} | Len={wrd_len} | X={self.x}+ | Y={self.y} | [Horizontal]\n"
             elif chc == 1:
                 self.get_pos(1, wrd_len, word, chc)
 
-                print(f"Word: {word} | Len={wrd_len} | X={self.x} | Y={self.y}+ [Vertical] ")
+                data += f"Word: {word} | Len={wrd_len} | X={self.x} | Y={self.y}+ | [Vertical]\n"
 
-            print(f"Position: {self.pos}\n")
+            data += f"Position: {self.pos}\nold_pos: {self.old_pos}\nDuplicate: {self.dup}\n\n"
+
             self.put_wrd(self.x, self.y, word, chc)
 
         self.format_grid()
         self.format_wrds()
-        self.output("grid.txt", "w+")
+        self.save_grid("grid.txt", "w+")
+        self.save_grid_data("grid_data.txt", "w+", data)
 
 
 game = CrossWord()
