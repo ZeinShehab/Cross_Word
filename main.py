@@ -14,12 +14,12 @@ WORDS = file.read().splitlines()
 class CrossWord:
     def __init__(self):
         self.chsn_wrds = []
-        self.grid = None
+        self.grid = np.array([])
+        self.x = 0
+        self.y = 0
         self.pos = None
         self.old_pos = None
         self.dup = None
-        self.x = None
-        self.y = None
 
     def get_grid(self):
         letters = []
