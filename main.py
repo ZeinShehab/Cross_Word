@@ -57,7 +57,6 @@ class CrossWord:
                 y += 1
 
     def collision(self):
-        print("collide")
         pass
 
     def put_wrd(self, x, y, wrd, chc):
