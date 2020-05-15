@@ -63,7 +63,6 @@ class CrossWord:
         self.is_collide()
 
         if self.collide and len(self.tkn_pos) > 1:
-            print("collide")
             self.old_pos = self.pos
             self.get_pos(u, v, wrd, chc)
         else:
@@ -75,7 +74,6 @@ class CrossWord:
             for j in i:
                 for k in self.pos:
                         if k[0] == j[0] and k[1] == j[1]:
-                            print(f"Pos: {k} tkn_pos: {j}")
                             collide = True
                             break
                         else:
@@ -131,7 +129,6 @@ class CrossWord:
         self.format_wrds()
         self.save_grid("grid.txt", "w+")
         self.save_grid_data("grid_data.txt", "w+", data)
-        # print(self.tkn_pos)
 
 
 game = CrossWord()
