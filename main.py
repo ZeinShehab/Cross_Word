@@ -68,9 +68,10 @@ class CrossWord:
             for _ in wrd:
                 self.pos.append([x, y])
 
-                # Increasing x and y according to whether the word is vertical or horizontal
+                # Incrementing x for horizontal word
                 if chc == 0:
                     x += 1
+                # Incrementing y for vertical word
                 elif chc == 1:
                     y += 1
 
@@ -88,9 +89,10 @@ class CrossWord:
             for _ in wrd:
                 self.pos.append([x, y])
 
-                # Increasing x and y according to whether the word is vertical or horizontal
+                # Decrementing x for horizontal word
                 if chc == 0:
                     x += -1
+                # Decrementing y for vertical word
                 elif chc == 1:
                     y += -1
 
