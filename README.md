@@ -1,1 +1,1 @@
-Cross word program made in python
+Cross word puzzle generator made in python
