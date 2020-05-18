@@ -6,8 +6,8 @@ file = open("words.txt", "r")
 # GLOBAL CONSTANTS
 WIDTH = 18
 HEIGHT = 18
-NWORDS = 5
-CHARS = "abcdefghijklmnopqrstuvwxyz"
+NWORDS = 10
+CHARS = " "
 WORDS = file.read().splitlines()
 
 
@@ -16,11 +16,12 @@ class CrossWord:
         self.chsn_wrds = []
         self.tkn_pos = []
         self.grid = np.array([])
-        self.run = True
         self.x = 0
         self.y = 0
         self.pos = []
         self.orientation = None
+        self.dirc_comp = False
+        self.can_share = False
         self.old_pos = None
         self.collide = False
 
@@ -35,25 +36,19 @@ class CrossWord:
     def format_grid(self):
         self.grid = str(self.grid).replace("[", " ").replace("]", " ").replace("'", "")
 
-    def get_wrds(self, chc):
+    def get_wrds(self):
         # Generating a list of random words
         tkn_wrds = []
         while len(self.chsn_wrds) < NWORDS:
             wrd = random.choice(WORDS)
-            if chc == 0:
-                if (len(wrd) < WIDTH) and (wrd not in tkn_wrds):
-                    self.chsn_wrds.append(wrd)
-                    tkn_wrds.append(wrd)
-            elif chc == 1:
-                if (len(wrd) < HEIGHT) and (wrd not in tkn_wrds):
-                    self.chsn_wrds.append(wrd)
-                    tkn_wrds.append(wrd)
+            if (len(wrd) < WIDTH) and (wrd not in tkn_wrds):
+                self.chsn_wrds.append(wrd)
+                tkn_wrds.append(wrd)
 
     def format_wrds(self):
         self.chsn_wrds = str(self.chsn_wrds[:]).replace("'", "").replace("[", "").replace("]", "")
 
     def get_pos(self, u, v, wrd, chc, orientation):
-
         if orientation == 0:  # Normal word
             self.orientation = "Normal"
 
@@ -66,7 +61,7 @@ class CrossWord:
 
             # Generating array of positions that the word will take
             for _ in wrd:
-                self.pos.append([x, y])
+                self.pos.append([y, x])
 
                 # Incrementing x for horizontal word
                 if chc == 0:
@@ -87,7 +82,7 @@ class CrossWord:
 
             # Generating array of positions that the word will take
             for _ in wrd:
-                self.pos.append([x, y])
+                self.pos.append([y, x])
 
                 # Decrementing x for horizontal word
                 if chc == 0:
@@ -96,12 +91,21 @@ class CrossWord:
                 elif chc == 1:
                     y += -1
 
+        if chc == 0:
+            ex = '0'
+        elif chc == 1:
+            ex = '1'
+        else:
+            ex = '2'
+
+        self.pos.append(ex)
+
         # Adding the position of the first word to the taken positions
         if len(self.tkn_pos) == 0:
             self.tkn_pos.append(self.pos)
 
         # Checking if the word collides with any other word
-        self.is_collide()
+        self.is_collide(chc, wrd)
 
         # Recalling the get_pos func to generate a new position if it collides
         if self.collide and len(self.tkn_pos) > 1:  # Making sure it doesn't loop through the first position
@@ -110,35 +114,37 @@ class CrossWord:
         else:
             self.tkn_pos.append(self.pos)
 
-    def is_collide(self):
+    def is_collide(self, chc, wrd):
         collide = False
         for i in self.tkn_pos:
             for j in i:
                 for k in self.pos:
-                    if k[0] == j[0] and k[1] == j[1]:
-                        collide = True
-                        break
+                    if self.pos.index(k) == len(self.pos) - 1:  # Checking that the 2 word directions are diiferent
+                        self.check_dir(k, i[len(i) - 1])
                     else:
-                        self.collide = False
+                        if k[0] == j[0] and k[1] == j[1]:       # Checking if the words collide
+                            self.can_share_letter()
+                            collide = True 
+
         self.collide = collide
 
-    def put_wrd(self, x, y, wrd, chc, orientation):
-        # Plotting each letter in the word on its respective x and y
-        for let in wrd:
-            self.grid[y, x] = let
+    def share_letter(self):
+        if self.dirc_comp and self.can_share:
+            print("Share letter")
 
-            # Incrementing x and y to plot normal words
-            if orientation == 0:
-                if chc == 0:
-                    x += 1
-                elif chc == 1:
-                    y += 1
-            # Decrementing x and y to plot reverse words
-            else:
-                if chc == 0:
-                    x += -1
-                elif chc == 1:
-                    y += -1
+    def can_share_letter(self):
+        pass
+
+    def check_dir(self, dirc1, dirc2):
+        if dirc1 != dirc2:
+            self.dirc_comp = True
+            print(dirc1, dirc2)
+        else:
+            self.dirc_comp = False
+
+    def put_wrd(self, wrd, pos):
+        for index, let in zip(pos, wrd):
+            self.grid[index[0], index[1]] = let
 
     def save_grid(self, filename, mode):
         f = open(filename, mode)
@@ -152,16 +158,15 @@ class CrossWord:
         f.close()
 
     def main(self):
-        # Horizontal or vertical word
-        chc = random.randint(0, 1)
-
         # Generating grid and words
         self.get_grid()
-        self.get_wrds(chc)
+        self.get_wrds()
 
         data = ""
 
         for word in self.chsn_wrds:
+            # Horizontal or vertical word
+            chc = random.randint(0, 1)
             # Normal or reverse word
             orientation = random.randint(0, 1)
 
@@ -178,7 +183,7 @@ class CrossWord:
                     op = '-'
                     self.get_pos(wrd_len, 0, word, chc, orientation)
 
-                data += f"Word: {word} | Len={wrd_len} | X={self.x+1}{op} | Y={self.y+1} | [Horizontal] |" \
+                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1} | [Horizontal] |" \
                         f" {self.orientation}\n"
 
             elif chc == 1:  # Vertical word
@@ -192,17 +197,17 @@ class CrossWord:
                     op = '-'
                     self.get_pos(0, wrd_len, word, chc, orientation)
 
-                data += f"Word: {word} | Len={wrd_len} | X={self.x+1} | Y={self.y+1}{op} | [Vertical] |" \
+                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1} | Y={self.y + 1}{op} | [Vertical] |" \
                         f" {self.orientation}\n"
 
             if word == self.chsn_wrds[0]:
                 self.collide = False
 
             # Saving grid data
-            data += f"Position: {self.pos}\nold_pos: {self.old_pos}\nCollide: {self.collide}\n\n"
+            data += f"Position: {self.pos}\nold_pos: {self.old_pos}\n\n"
 
             # Writing word to the grid
-            self.put_wrd(self.x, self.y, word, chc, orientation)
+            self.put_wrd(word, self.pos)
 
         # Formatting words and grid to write to text file
         self.format_grid()
