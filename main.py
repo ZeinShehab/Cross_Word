@@ -69,6 +69,10 @@ class CrossWord:
                 # Incrementing y for vertical word
                 elif chc == 1:
                     y += 1
+                # Incrementing x and y for diagonal word
+                else:
+                    x += 1
+                    y += 1
 
         else:  # Reverse word
             self.orientation = "Reverse"
@@ -90,6 +94,10 @@ class CrossWord:
                 # Decrementing y for vertical word
                 elif chc == 1:
                     y += -1
+                # Decrementing x and y for diagonal word  
+                else:
+                    x -= 1
+                    y -= 1
 
         if chc == 0:
             ex = '0'
@@ -119,11 +127,17 @@ class CrossWord:
         for i in self.tkn_pos:
             for j in i:
                 for k in self.pos:
-                    if self.pos.index(k) == len(self.pos) - 1:  # Checking that the 2 word directions are diiferent
-                        self.check_dir(k, i[len(i) - 1])
-                    else:
-                        if k[0] == j[0] and k[1] == j[1]:       # Checking if the words collide
-                            self.can_share_letter()
+                    if type(k) != str:
+
+                        if k[0] == j[0] and k[1] == j[1]:                               # Checking if the words collide
+                            self.check_dir(self.pos[len(self.pos)-1], i[len(i) - 1])    # Words are not both horizontal or vertical...
+
+                            if self.dirc_comp:
+                                self.can_share_letter()                                 # Is letter on point of collision the same letter
+
+                            if self.can_share:                                          # If both conditions are true do something
+                                print("Share")        
+
                             collide = True 
 
         self.collide = collide
@@ -165,11 +179,8 @@ class CrossWord:
         data = ""
 
         for word in self.chsn_wrds:
-            # Horizontal or vertical word
-            chc = random.randint(0, 1)
-            # Normal or reverse word
-            orientation = random.randint(0, 1)
-
+            chc = random.randint(0, 2)  # Horizontal, vertical or diagonal word
+            orientation = random.randint(0, 1)  # Normal or reverse word
             wrd_len = len(word)
 
             if chc == 0:  # Horizontal word
@@ -198,6 +209,17 @@ class CrossWord:
                     self.get_pos(0, wrd_len, word, chc, orientation)
 
                 data += f"Word: {word} | Len={wrd_len} | X={self.x + 1} | Y={self.y + 1}{op} | [Vertical] |" \
+                        f" {self.orientation}\n"
+
+            else:   # diagonal word
+                if orientation == 0:
+                    op = "+"
+                    self.get_pos(wrd_len, wrd_len, word, chc, orientation)
+                else:
+                    op = '-'
+                    self.get_pos(wrd_len, wrd_len, word, chc, orientation)
+
+                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1}{op} | [Diagonal] |" \
                         f" {self.orientation}\n"
 
             if word == self.chsn_wrds[0]:
