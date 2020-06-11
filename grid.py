@@ -11,7 +11,7 @@ CHARS = " "
 WORDS = file.read().splitlines()
 
 
-class CrossWord:
+class Grid:
     def __init__(self):
         self.chsn_wrds = []
         self.tkn_pos = []
@@ -27,8 +27,9 @@ class CrossWord:
                 letters.append(random.choice(CHARS))
         self.grid = np.array(letters).reshape(HEIGHT, WIDTH)
 
-    def format_grid(self):
-        self.grid = str(self.grid).replace("[", " ").replace("]", " ").replace("'", "")
+    @staticmethod
+    def format_grid(grid):
+        return str(grid).replace("[", " ").replace("]", " ").replace("'", "")
 
     def get_wrds(self):
         tkn_wrds = []
@@ -38,8 +39,9 @@ class CrossWord:
                 self.chsn_wrds.append(wrd)
                 tkn_wrds.append(wrd)
 
-    def format_wrds(self):
-        self.chsn_wrds = str(self.chsn_wrds[:]).replace("'", "").replace("[", "").replace("]", "")
+    @staticmethod
+    def format_wrds(words):
+        return str(words[:]).replace("'", "").replace("[", "").replace("]", "")
 
     def get_pos(self, u, v, wrd, chc, orientation):
         if orientation == 0:  # Normal word
@@ -131,13 +133,14 @@ class CrossWord:
         for index, let in zip(pos, wrd):
             self.grid[index[0], index[1]] = let
 
-    def save_grid(self, filename, mode):
+    @staticmethod
+    def save_grid(grid, words, filename, mode):
         f = open(filename, mode)
-        f.write(f"{self.grid} \n\n {self.chsn_wrds}")
+        f.write(f"{grid} \n\n {words}")
         f.close()
 
     @staticmethod
-    def save_grid_data(filename, mode, data):
+    def save_grid_data(filename, mode):
         f = open(filename, mode)
         f.write(data)
         f.close()
@@ -146,6 +149,7 @@ class CrossWord:
         self.get_grid()
         self.get_wrds()
 
+        global data
         data = ""
 
         for word in self.chsn_wrds:
@@ -198,9 +202,3 @@ class CrossWord:
 
         # Returns arrays of grid and words
         return self.grid, self.chsn_wrds
-
-        # Formatting words and grid to write to text file
-        self.format_grid()
-        self.format_wrds()
-        self.save_grid("grid.txt", "w+")
-        self.save_grid_data("grid_data.txt", "w+", data)
