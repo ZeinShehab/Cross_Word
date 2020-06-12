@@ -4,9 +4,10 @@ file = open("words.txt", "r")
 
 
 # GLOBAL CONSTANTS
-WIDTH = 18
-HEIGHT = 18
+WIDTH = 15
+HEIGHT = 15
 NWORDS = 10
+# CHARS = "abcdefghijklmnopqrstuvwxyz"
 CHARS = " "
 WORDS = file.read().splitlines()
 
