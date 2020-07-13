@@ -43,7 +43,10 @@ SCRATCH_FONT = pygame.font.Font(os.path.join("assets/Montserrat", "Montserrat-Me
 def get_grid():
 	global GRID, WORDS
 
+	cw.get_wrds()
 	GRID, WORDS = cw.main()
+
+	cw.save_grid_data("grid_data.txt", "w+")
 
 def hover(rect):
     if rect.collidepoint(pygame.mouse.get_pos()):
@@ -85,9 +88,6 @@ def rest_btn():
     rest_rect.x = int(WIDTH/2 - (rest_rect.width/2)+ 300)
     rest_rect.y = int(HEIGHT - (rest_rect.height + MARGIN))
 
-    # if hover(exit_rect):
-    #     rest = LET_FONT_2.render("x", 1, ACCENT)
-
     WIN.blit(RESTART, (rest_rect.x, rest_rect.y))
 
     return rest_rect
@@ -99,11 +99,15 @@ def main():
 	get_grid()									# Fix
 
 	while run:
-		WIN.fill((255,255,255))
+		clock.tick(60)
+
+		WIN.blit(BG, (0,0))
 
 		show_grid()
 		show_words()
 		restart_btn = rest_btn()
+
+		pygame.display.flip()
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -115,5 +119,4 @@ def main():
 					run = False
 					main()
 
-		pygame.display.flip()
 main()
