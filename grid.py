@@ -7,8 +7,8 @@ file = open("words.txt", "r")
 WIDTH = 15
 HEIGHT = 15
 NWORDS = 10
-# CHARS = "abcdefghijklmnopqrstuvwxyz"
-CHARS = " "
+CHARS = "abcdefghijklmnopqrstuvwxyz"
+# CHARS = " "
 WORDS = file.read().splitlines()
 
 
@@ -34,11 +34,13 @@ class Grid:
 
     def get_wrds(self):
         tkn_wrds = []
-        while len(self.chsn_wrds) < NWORDS:
+        wrds = []
+        while len(wrds) < NWORDS:
             wrd = random.choice(WORDS).lower()
             if (len(wrd) < WIDTH) and (wrd not in tkn_wrds):
-                self.chsn_wrds.append(wrd)
+                wrds.append(wrd)
                 tkn_wrds.append(wrd)
+        self.chsn_wrds = wrds
 
     @staticmethod
     def format_wrds(words):
