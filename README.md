@@ -11,11 +11,12 @@ you can choose to save the puzzles as PDF or txt to print or use later.
 - Run the `gui.py` file for a graphical playable version.
 - You can also run the `save.py` file to save a crossword puzzle grid in PDF & txt (OPTIONAL).
 
+You can modify the options of the game such as number of words and width/height in the `options.json` file.
 
 ## For own use
 The `grid.py` file returns the grid and wordlist. For use in a personal program add to code:
 
 - `from grid import Grid`
-- `grid, words = Grid.main()` which returns the grid and wordlist.
+- `grid, words = Grid().main()` which returns the grid and wordlist.
 
 Now you can use the `grid` and `words` variables in your program.    
