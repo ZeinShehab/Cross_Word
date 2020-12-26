@@ -12,7 +12,7 @@ you can choose to save the puzzles as PDF or txt to print or use later.
 
 
 ## For own use
-The `grid.py` file returns the grid and wordlist. For use in a different file use:
+The `grid.py` file returns the grid and wordlist. For use in a personal program add to code:
 
 - `from grid import Grid`
 - `grid, words = Grid.main()` which returns the grid and wordlist.
