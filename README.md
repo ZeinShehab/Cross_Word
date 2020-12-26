@@ -8,9 +8,7 @@ you can choose to save the puzzles as PDF or txt to print or use later.
 ## Instructions
 
 - Run the `gui.py` file for a graphical playable version.
-
-                            OR
-- Run the `save.py` file to save a crossword puzzle grid in (PDF, txt).
+- You can also run the `save.py` file to save a crossword puzzle grid in PDF & txt (OPTIONAL).
 
 
 ## For own use
