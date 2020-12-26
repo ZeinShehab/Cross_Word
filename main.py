@@ -2,7 +2,7 @@ import pygame
 import os
 import sys
 import numpy as np
-import grid
+import grid					# Change to from grid
 
 cw = grid.Grid()
 pygame.init()
@@ -12,7 +12,7 @@ pygame.display .set_caption("Cross Word")
 # GLOBAL CONSTANTS
 BLOCK_SIZE = 20
 MARGIN = 15
-N_BLOCKS = 15
+N_BLOCKS = 15				# Change to work in sync with grid.py width and height
 
 # GLOBAL VARIABLES
 GRID = []
