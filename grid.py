@@ -1,15 +1,19 @@
 import random
 import numpy as np
-file = open("words.txt", "r")
+import json
 
+options = json.load(open("options.json", "r"))[0]
 
 # GLOBAL CONSTANTS
-WIDTH = 15
-HEIGHT = 15
-NWORDS = 10
-CHARS = "abcdefghijklmnopqrstuvwxyz"
-# CHARS = " "
-WORDS = file.read().splitlines()
+WIDTH = options["width"]
+HEIGHT = options["height"]
+NWORDS = options["numberOfWords"]
+WORDS = open(options["wordFile"], "r").read().splitlines()
+
+if options["fillGrid"]:
+    CHARS = "abcdefghijklmnopqrstuvwxyz"
+else:
+    CHARS = " "
 
 
 class Grid:
