@@ -82,7 +82,6 @@ class Grid:
             self.get_pos(wrd)
         else:
             self.tkn_pos.append(self.pos)
-            # return pos
 
     def is_collide(self, wrd):
         collide = False
