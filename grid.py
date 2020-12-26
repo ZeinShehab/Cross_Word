@@ -50,65 +50,41 @@ class Grid:
     def format_wrds(words):
         return str(words[:]).replace("'", "").replace("[", "").replace("]", "")
 
-    def get_pos(self, u, v, wrd, chc, orientation):
-        if orientation == 0:  # Normal word
-            self.x = random.randint(0, WIDTH - u)
-            self.y = random.randint(0, HEIGHT - v)
-            self.pos = []
+    def get_pos(self, wrd):
+        direction = random.choice([-1, 1])      # Reverse or normal
+        orientation = random.choice([-1, 1])    # Vertical or Horizontal
+        self.pos = []
 
-            x, y = self.x, self.y
+        u = random.randint(0, WIDTH-1)
 
-            # array of positions that the word will take
-            for _ in wrd:
-                self.pos.append([y, x])
+        if direction == 1:      # Normal = 1
+            v = random.randint(0, WIDTH-len(wrd))
+        else:                   # Reverse = -1
+            v = random.randint(len(wrd), WIDTH-1)
+            
+        x = [v, u][::orientation][0]
+        y = [v, u][::orientation][1]
+        
+        # Adding coordinates to position
+        for _ in wrd:
+            self.pos.append([y, x])
 
-                if chc == 0:
-                    x += 1
-                elif chc == 1:
-                    y += 1
-                else:
-                    x += 1
-                    y += 1
-
-        else:  # Reverse word
-            self.x = random.randint(u, WIDTH - 1)
-            self.y = random.randint(v, HEIGHT - 1)
-            self.pos = []
-
-            x, y = self.x, self.y
-
-            # array of positions that the word will take
-            for _ in wrd:
-                self.pos.append([y, x])
-
-                if chc == 0:
-                    x += -1
-                elif chc == 1:
-                    y += -1
-                else:
-                    x -= 1
-                    y -= 1
-
-        if chc == 0:
-            orien = '0'
-        elif chc == 1:
-            orien = '1'
-        else:
-            orien = '2'
-
-        self.pos.append(orien)
-
-        # Adding the position of the first word to the taken positions
-        if len(self.tkn_pos) == 0:
-            self.tkn_pos.append(self.pos)
-
-        # generate a new position if it collides
-        if self.is_collide(chc, wrd) and len(self.tkn_pos) > 1:  # Making sure it doesn't loop through the first position
-            self.get_pos(u, v, wrd, chc, orientation)
+            if orientation == 1:    # Horizontal
+                x += direction
+            elif orientation == -1: # Vertical
+                y += direction
+        
+        # Adding orientation to position
+        self.pos.append(str(orientation))
+ 
+        # Checking for collision with other words
+        if self.is_collide(wrd) and len(self.tkn_pos) > 1:
+            self.get_pos(wrd)
         else:
             self.tkn_pos.append(self.pos)
+            # return pos
 
-    def is_collide(self, chc, wrd):
+    def is_collide(self, wrd):
         collide = False
         collisions = 0
         for i in self.tkn_pos:
@@ -160,48 +136,50 @@ class Grid:
         data = ""
 
         for word in self.chsn_wrds:
-            chc = random.randint(0, 2)          # Horizontal, vertical or diagonal word
-            orientation = random.randint(0, 1)  # Normal or reverse word
-            wrd_len = len(word)
+            # chc = random.randint(0, 2)          # Horizontal, vertical or diagonal word
+            # orientation = random.randint(0, 1)  # Normal or reverse word
+            # wrd_len = len(word)
 
-            if word == self.chsn_wrds[0]:
-                self.collide = False
+            # if word == self.chsn_wrds[0]:
+            #     self.collide = False
 
-            if chc == 0:  # Horizontal word
-                # Normal word
-                if orientation == 0:
-                    op = '+'
-                    self.get_pos(wrd_len, 1, word, chc, orientation)
-                # Reverse word
-                else:
-                    op = '-'
-                    self.get_pos(wrd_len, 0, word, chc, orientation)
+            # if chc == 0:  # Horizontal word
+            #     # Normal word
+            #     if orientation == 0:
+            #         op = '+'
+            #         self.get_pos(wrd_len, 1, word, chc, orientation)
+            #     # Reverse word
+            #     else:
+            #         op = '-'
+            #         self.get_pos(wrd_len, 0, word, chc, orientation)
 
-                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1} | [Horizontal]\n"
+            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1} | [Horizontal]\n"
 
-            elif chc == 1:  # Vertical word
-                # Normal word
-                if orientation == 0:
-                    op = '+'
-                    self.get_pos(1, wrd_len, word, chc, orientation)
-                # Reverse word
-                else:
-                    op = '-'
-                    self.get_pos(0, wrd_len, word, chc, orientation)
+            # elif chc == 1:  # Vertical word
+            #     # Normal word
+            #     if orientation == 0:
+            #         op = '+'
+            #         self.get_pos(1, wrd_len, word, chc, orientation)
+            #     # Reverse word
+            #     else:
+            #         op = '-'
+            #         self.get_pos(0, wrd_len, word, chc, orientation)
 
-                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1} | Y={self.y + 1}{op} | [Vertical]\n"
+            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1} | Y={self.y + 1}{op} | [Vertical]\n"
 
-            else:   # diagonal word
-                if orientation == 0:
-                    op = "+"
-                    self.get_pos(wrd_len, wrd_len, word, chc, orientation)
-                else:
-                    op = '-'
-                    self.get_pos(wrd_len, wrd_len, word, chc, orientation)
+            # else:   # diagonal word
+            #     if orientation == 0:
+            #         op = "+"
+            #         self.get_pos(wrd_len, wrd_len, word, chc, orientation)
+            #     else:
+            #         op = '-'
+            #         self.get_pos(wrd_len, wrd_len, word, chc, orientation)
 
-                data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1}{op} | [Diagonal]\n"
+            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1}{op} | [Diagonal]\n"
 
+            
             # Writing word to the grid
+            self.get_pos(word)
             self.put_wrd(word, self.pos)
 
             # Saving grid data
