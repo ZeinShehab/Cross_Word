@@ -14,9 +14,9 @@ WORDS = file.read().splitlines()
 
 class Grid:
     def __init__(self):
-        self.chsn_wrds = []
+        self.chsn_wrds = []				# self.get_wrds()
         self.tkn_pos = []
-        self.grid = np.array([])
+        self.grid = np.array([])		# self.get_grid()
         self.x = 0
         self.y = 0
         self.pos = []
@@ -26,7 +26,7 @@ class Grid:
         for _ in range(WIDTH):
             for _ in range(HEIGHT):
                 letters.append(random.choice(CHARS))
-        self.grid = np.array(letters).reshape(HEIGHT, WIDTH)
+        self.grid = np.array(letters).reshape(HEIGHT, WIDTH)		# return
 
     @staticmethod
     def format_grid(grid):
@@ -40,7 +40,7 @@ class Grid:
             if (len(wrd) < WIDTH) and (wrd not in tkn_wrds):
                 wrds.append(wrd)
                 tkn_wrds.append(wrd)
-        self.chsn_wrds = wrds
+        self.chsn_wrds = wrds 										# return
 
     @staticmethod
     def format_wrds(words):
