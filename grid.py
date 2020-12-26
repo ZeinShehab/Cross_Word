@@ -123,7 +123,7 @@ class Grid:
 
         return collide
 
-    def share_let(self, dirc1, dirc2, word, pos):
+    def share_let(self, dirc1, dirc2, word, pos):                      # Needs Attention
         for l, p in zip(word, self.pos):                             # Getting letter of corresponding pos
             if p == pos:
                 let = l
