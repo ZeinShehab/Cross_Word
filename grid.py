@@ -51,55 +51,51 @@ class Grid:
         return str(words[:]).replace("'", "").replace("[", "").replace("]", "")
 
     def get_pos(self, wrd):
-        direction = random.choice([-1, 1])      # Reverse or normal
-        orientation = random.choice([-1, 0, 1])    # Vertical or Horizontal
+        # Generate coordinates for word
+        direction = random.choice([-1, 1])                              # Reverse(-1) or normal(1)
+        orientation = random.choice([-1, 0, 1])                         # Horizontal(-1) or Vertical(1) or Diagonal(0)
+        x_diag_dirc, y_diag_dirc = random.sample([1, 1, -1, -1], 2)     # Left(=) or Right(><) diagonal
+        
+        normal_range = range(0, WIDTH-len(wrd))
+        reverse_range = range(len(wrd), WIDTH-1)
+
         self.pos = []
 
-        # normal = (0, WIDTH-len(wrd))
-        # reverse = (len(wrd), WIDTH-1)
+        if orientation != 0:                                            # Horizontal or Vertical
+            cord_1 = random.randint(0, WIDTH-1)
+            cord_2 = [random.choice(normal_range), random.choice(reverse_range)]
 
-        u = random.randint(0, WIDTH-1)
+            x, y = [cord_1, cord_2[::direction][0]][::orientation]
+        
+        else:                                                           # Diagonal
+            cord_1 = random.sample(normal_range, 2)                    
+            cord_2 = random.sample(reverse_range, 2) 
 
-        if direction == 1:      # Normal = 1
-            v = random.randint(0, WIDTH-len(wrd))
-        else:                   # Reverse = -1
-            v = random.randint(len(wrd), WIDTH-1)
-
-        if orientation != 0:    # x, y = [v, u][::orientation]
-            x, y = [v, u][::orientation]
-        else:
-            x_diag_orien, y_diag_orien = random.sample([-1, 1], 2)
-
-            u, u2 = random.sample(range(len(wrd), WIDTH-1), 2)
-            v, v2 = random.sample(range(0, WIDTH-len(wrd)), 2)
-
-            if x_diag_orien == y_diag_orien:                    # Left diagonal
-                x, y = [v, v2, u2, u2][::x_diag_orien][0:2]     # If x_diag = -1 => reverse diagonal, so we reverse list
-
-            else:                                               # Right diagonal
-                x, y = [v, u][::x_diag_orien]                   # If x_diag = -1 => reverse diagonal, so we reverse list
-
+            if x_diag_dirc == y_diag_dirc:                              # Left diagonal
+                x, y = [cord_1, cord_2][::x_diag_dirc][0]
+            else:                                                       # Right diagonal
+                x, y = [cord_1[0], cord_2[0]][::x_diag_dirc]
+            
         # Adding coordinates to position
         for _ in wrd:
             self.pos.append([y, x])
 
-            if orientation == 1:    # Horizontal
+            if orientation == -1:
                 x += direction
-            elif orientation == -1: # Vertical
+            elif orientation == 1:
                 y += direction
             else:
-                
-                x += x_diag_orien
-                y += y_diag_orien
-        
+                x += x_diag_dirc
+                y += y_diag_dirc
+
         # Adding orientation to position
         self.pos.append(str(orientation))
 
         # Checking for collision with other words
         if self.is_collide(wrd) and len(self.tkn_pos) > 1:
-            self.get_pos(wrd)
+            self.get_pos(wrd)                                           # Recall function if collides
         else:
-            self.tkn_pos.append(self.pos)
+            self.tkn_pos.append(self.pos)                               # Add pos to taken position
 
     def is_collide(self, wrd):
         collide = False
@@ -110,13 +106,13 @@ class Grid:
                     if type(k) != str:
 
                         if k[0] == j[0] and k[1] == j[1]:                               # Checking if the words collide
-                                collisions += 1
+                            collisions += 1
 
-                                if self.share_let(self.pos[len(self.pos)-1], i[len(i) - 1], wrd, k) and collisions == 1:
-                                    collide = False
-                                    # print("SHARE", wrd)
-                                else:
-                                    collide = True 
+                            if self.share_let(self.pos[len(self.pos)-1], i[len(i) - 1], wrd, k) and collisions == 1:
+                                collide = False
+                                # print("SHARE", wrd)
+                            else:
+                                collide = True 
 
         return collide
 
@@ -140,7 +136,7 @@ class Grid:
         f.close()
 
     @staticmethod
-    def save_grid_data(filename, mode):
+    def save_grid_data(filename, mode, data):
         f = open(filename, mode)
         f.write(data)
         f.close()
@@ -149,58 +145,12 @@ class Grid:
         self.get_grid()
         self.get_wrds()
 
-        global data
-        data = ""
-
         for word in self.chsn_wrds:
-            # chc = random.randint(0, 2)          # Horizontal, vertical or diagonal word
-            # orientation = random.randint(0, 1)  # Normal or reverse word
-            # wrd_len = len(word)
-
-            # if word == self.chsn_wrds[0]:
-            #     self.collide = False
-
-            # if chc == 0:  # Horizontal word
-            #     # Normal word
-            #     if orientation == 0:
-            #         op = '+'
-            #         self.get_pos(wrd_len, 1, word, chc, orientation)
-            #     # Reverse word
-            #     else:
-            #         op = '-'
-            #         self.get_pos(wrd_len, 0, word, chc, orientation)
-
-            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1} | [Horizontal]\n"
-
-            # elif chc == 1:  # Vertical word
-            #     # Normal word
-            #     if orientation == 0:
-            #         op = '+'
-            #         self.get_pos(1, wrd_len, word, chc, orientation)
-            #     # Reverse word
-            #     else:
-            #         op = '-'
-            #         self.get_pos(0, wrd_len, word, chc, orientation)
-
-            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1} | Y={self.y + 1}{op} | [Vertical]\n"
-
-            # else:   # diagonal word
-            #     if orientation == 0:
-            #         op = "+"
-            #         self.get_pos(wrd_len, wrd_len, word, chc, orientation)
-            #     else:
-            #         op = '-'
-            #         self.get_pos(wrd_len, wrd_len, word, chc, orientation)
-
-            #     data += f"Word: {word} | Len={wrd_len} | X={self.x + 1}{op} | Y={self.y + 1}{op} | [Diagonal]\n"
-
-            
-            # Writing word to the grid
+            # Get postion for word
             self.get_pos(word)
-            self.put_wrd(word, self.pos)
 
-            # Saving grid data
-            data += f"Position: {self.pos}\n\n"
+            # Writing word to the grid
+            self.put_wrd(word, self.pos)
 
         # Returns arrays of grid and words
         return self.grid, self.chsn_wrds
