@@ -1,7 +1,10 @@
+#!/usr/bin/python3
+
 import random
 import numpy as np
 import json
 
+# LOAD OPTIONS FILE
 options = json.load(open("options.json", "r"))[0]
 
 # GLOBAL CONSTANTS
@@ -9,6 +12,11 @@ SIZE = options["size"]
 NWORDS = options["numberOfWords"]
 WORDS = open(options["wordFile"], "r").read().splitlines()
 
+# Prevent overstuffing words
+if SIZE-NWORDS <= 5:
+    NWORDS = SIZE + 5
+
+# Empty or full grid
 if options["fillGrid"]:
     CHARS = "abcdefghijklmnopqrstuvwxyz"
 else:
