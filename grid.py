@@ -5,8 +5,7 @@ import json
 options = json.load(open("options.json", "r"))[0]
 
 # GLOBAL CONSTANTS
-WIDTH = options["width"]
-HEIGHT = options["height"]
+SIZE = options["size"]
 NWORDS = options["numberOfWords"]
 WORDS = open(options["wordFile"], "r").read().splitlines()
 
@@ -27,10 +26,10 @@ class Grid:
 
     def get_grid(self):
         letters = []
-        for _ in range(WIDTH):
-            for _ in range(HEIGHT):
+        for _ in range(SIZE):
+            for _ in range(SIZE):
                 letters.append(random.choice(CHARS))
-        self.grid = np.array(letters).reshape(HEIGHT, WIDTH)		# return
+        self.grid = np.array(letters).reshape(SIZE, SIZE)		# return
 
     @staticmethod
     def format_grid(grid):
@@ -41,7 +40,7 @@ class Grid:
         wrds = []
         while len(wrds) < NWORDS:
             wrd = random.choice(WORDS).lower()
-            if (len(wrd) < WIDTH-1) and (wrd not in tkn_wrds):
+            if (len(wrd) < SIZE-1) and (wrd not in tkn_wrds):
                 wrds.append(wrd)
                 tkn_wrds.append(wrd)
         self.chsn_wrds = wrds 										# return
@@ -56,13 +55,13 @@ class Grid:
         orientation = random.choice([-1, 0, 1])                         # Horizontal(-1) or Vertical(1) or Diagonal(0)
         x_diag_dirc, y_diag_dirc = random.sample([1, 1, -1, -1], 2)     # Left(=) or Right(><) diagonal
         
-        normal_range = range(0, WIDTH-len(wrd))
-        reverse_range = range(len(wrd), WIDTH-1)
+        normal_range = range(0, SIZE-len(wrd))
+        reverse_range = range(len(wrd), SIZE-1)
 
         self.pos = []
 
         if orientation != 0:                                            # Horizontal or Vertical
-            cord_1 = random.randint(0, WIDTH-1)
+            cord_1 = random.randint(0, SIZE-1)
             cord_2 = [random.choice(normal_range), random.choice(reverse_range)]
 
             x, y = [cord_1, cord_2[::direction][0]][::orientation]
