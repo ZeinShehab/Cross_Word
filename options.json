@@ -1,9 +1,9 @@
 [    
    {
-        "width":15,
-        "height":15,
-        "numberOfWords":10,
-        "wordFile":"words.txt",
-        "fillGrid":false
+        "width": 15,
+        "height": 15,
+        "numberOfWords": 10,
+        "wordFile": "words.txt",
+        "fillGrid": false
     }
 ]
