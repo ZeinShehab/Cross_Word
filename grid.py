@@ -25,8 +25,8 @@ else:
 
 class Grid:
     def __init__(self):
-        self.chsn_wrds = self.get_wrds()
         self.grid = self.get_grid()
+        self.chsn_wrds = self.get_wrds()
         self.tkn_pos = []
         self.pos = []
 
