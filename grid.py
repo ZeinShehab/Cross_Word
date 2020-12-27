@@ -41,7 +41,7 @@ class Grid:
         wrds = []
         while len(wrds) < NWORDS:
             wrd = random.choice(WORDS).lower()
-            if (len(wrd) < WIDTH) and (wrd not in tkn_wrds):
+            if (len(wrd) < WIDTH-1) and (wrd not in tkn_wrds):
                 wrds.append(wrd)
                 tkn_wrds.append(wrd)
         self.chsn_wrds = wrds 										# return
@@ -52,8 +52,11 @@ class Grid:
 
     def get_pos(self, wrd):
         direction = random.choice([-1, 1])      # Reverse or normal
-        orientation = random.choice([-1, 1])    # Vertical or Horizontal
+        orientation = random.choice([-1, 0, 1])    # Vertical or Horizontal
         self.pos = []
+
+        # normal = (0, WIDTH-len(wrd))
+        # reverse = (len(wrd), WIDTH-1)
 
         u = random.randint(0, WIDTH-1)
 
@@ -61,10 +64,21 @@ class Grid:
             v = random.randint(0, WIDTH-len(wrd))
         else:                   # Reverse = -1
             v = random.randint(len(wrd), WIDTH-1)
-            
-        x = [v, u][::orientation][0]
-        y = [v, u][::orientation][1]
-        
+
+        if orientation != 0:    # x, y = [v, u][::orientation]
+            x, y = [v, u][::orientation]
+        else:
+            x_diag_orien, y_diag_orien = random.sample([-1, 1], 2)
+
+            u, u2 = random.sample(range(len(wrd), WIDTH-1), 2)
+            v, v2 = random.sample(range(0, WIDTH-len(wrd)), 2)
+
+            if x_diag_orien == y_diag_orien:                    # Left diagonal
+                x, y = [v, v2, u2, u2][::x_diag_orien][0:2]     # If x_diag = -1 => reverse diagonal, so we reverse list
+
+            else:                                               # Right diagonal
+                x, y = [v, u][::x_diag_orien]                   # If x_diag = -1 => reverse diagonal, so we reverse list
+
         # Adding coordinates to position
         for _ in wrd:
             self.pos.append([y, x])
@@ -73,10 +87,14 @@ class Grid:
                 x += direction
             elif orientation == -1: # Vertical
                 y += direction
+            else:
+                
+                x += x_diag_orien
+                y += y_diag_orien
         
         # Adding orientation to position
         self.pos.append(str(orientation))
- 
+
         # Checking for collision with other words
         if self.is_collide(wrd) and len(self.tkn_pos) > 1:
             self.get_pos(wrd)
