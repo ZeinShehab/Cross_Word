@@ -3,3 +3,4 @@ grid.txt
 .vscode
 *.pyc
 __pycache__
+test.py
