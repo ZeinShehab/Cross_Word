@@ -131,8 +131,8 @@ class Grid:
         return False
 
     def put_wrd(self, wrd, pos):
-        for index, let in zip(pos, wrd):
-            self.grid[index[0], index[1]] = let
+        for cord, let in zip(pos, wrd):
+            self.grid[cord[0], cord[1]] = let
 
     @staticmethod
     def save_grid(grid, words, filename, mode):
