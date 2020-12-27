@@ -20,8 +20,6 @@ class Grid:
         self.chsn_wrds = self.get_wrds()
         self.grid = self.get_grid()
         self.tkn_pos = []
-        self.x = 0
-        self.y = 0
         self.pos = []
 
     def get_grid(self):
