@@ -48,7 +48,7 @@ class Grid:
         chsn_wrds = []
 
         if DIFFICULTY == "easy":
-            length_range = range(0, 6)
+            length_range = range(3, 6)
         elif DIFFICULTY == "medium":
             length_range = range(6, 8) 
         elif DIFFICULTY == "hard":
