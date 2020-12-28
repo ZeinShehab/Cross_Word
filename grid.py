@@ -121,11 +121,9 @@ class Grid:
 
         return collide
 
-    def share_let(self, dirc1, dirc2, word, pos):                      # Needs Attention
-        for l, p in zip(word, self.pos):                             # Getting letter of corresponding pos
-            if p == pos:
-                let = l
-
+    def share_let(self, dirc1, dirc2, word, pos):
+        let = word[self.pos.index(pos)]
+        
         if dirc1 != dirc2 and self.grid[pos[0], pos[1]] == let:
             return True
         return False
