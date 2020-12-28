@@ -3,7 +3,7 @@
         "size": 15,
         "numberOfWords": 10,
         "wordFile": "words.txt",
-        "difficulty": "medium",
+        "difficulty": "hard",
         "fillGrid": false
     }
 ]
