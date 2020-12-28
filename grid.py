@@ -13,7 +13,7 @@ NWORDS = options["numberOfWords"]
 WORDS = open(options["wordFile"], "r").read().splitlines()
 
 # Prevent overstuffing words
-if SIZE-NWORDS <= 5:
+if SIZE-NWORDS < 5:
     NWORDS = SIZE + 5
 
 # Empty or full grid
