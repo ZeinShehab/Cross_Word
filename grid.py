@@ -52,7 +52,7 @@ class Grid:
         elif DIFFICULTY == "medium":
             length_range = range(6, 8) 
         elif DIFFICULTY == "hard":
-            length_range = range(8, 13)
+            length_range = range(8, SIZE)
         else:               # mixed
             length_range = range(0, SIZE)
 
