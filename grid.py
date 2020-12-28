@@ -10,6 +10,7 @@ options = json.load(open("options.json", "r"))[0]
 # GLOBAL CONSTANTS
 SIZE = options["size"]
 NWORDS = options["numberOfWords"]
+DIFFICULTY = options["difficulty"]
 WORDS = open(options["wordFile"], "r").read().splitlines()
 
 # Prevent overstuffing words
@@ -42,14 +43,31 @@ class Grid:
         return str(grid).replace("[", " ").replace("]", " ").replace("'", "")
 
     def get_wrds(self):
+        word_list = []
         tkn_wrds = []
-        wrds = []
-        while len(wrds) < NWORDS:
-            wrd = random.choice(WORDS).lower()
-            if (len(wrd) < SIZE-1) and (wrd not in tkn_wrds):
-                wrds.append(wrd)
+        chsn_wrds = []
+
+        if DIFFICULTY == "easy":
+            length_range = range(0, 6)
+        elif DIFFICULTY == "medium":
+            length_range = range(6, 8) 
+        elif DIFFICULTY == "hard":
+            length_range = range(8, 13)
+        else:               # mixed
+            length_range = range(0, SIZE)
+
+        for wrd in WORDS:                           # Get words for the difficulty, add to list
+            if len(wrd) in length_range:
+                word_list.append(wrd)
+
+        while len(chsn_wrds) < NWORDS:              # Choose random words from word_list
+            wrd = random.choice(word_list).lower()
+
+            if (wrd not in tkn_wrds):
+                chsn_wrds.append(wrd)
                 tkn_wrds.append(wrd)
-        return wrds
+
+        return chsn_wrds
 
     @staticmethod
     def format_wrds(words):
