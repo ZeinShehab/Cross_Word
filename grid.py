@@ -52,9 +52,9 @@ class Grid:
         elif DIFFICULTY == "medium":
             length_range = range(6, 8) 
         elif DIFFICULTY == "hard":
-            length_range = range(8, SIZE)
+            length_range = range(8, SIZE-1)
         else:               # mixed
-            length_range = range(0, SIZE)
+            length_range = range(0, SIZE-1)
 
         for wrd in WORDS:                           # Get words for the difficulty, add to list
             if len(wrd) in length_range:
@@ -80,7 +80,7 @@ class Grid:
         x_diag_dirc, y_diag_dirc = random.sample([1, 1, -1, -1], 2)     # Left(=) or Right(><) diagonal
         
         normal_range = range(0, SIZE-len(wrd))
-        reverse_range = range(len(wrd), SIZE-1)
+        reverse_range = range(len(wrd), SIZE)
 
         self.pos = []
 
