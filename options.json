@@ -2,8 +2,8 @@
    {
         "size": 15,
         "numberOfWords": 10,
-        "wordFile": "words.txt",
         "difficulty": "hard",
+        "wordFile": "words.txt",
         "fillGrid": false
     }
 ]
