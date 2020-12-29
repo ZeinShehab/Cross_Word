@@ -98,7 +98,7 @@ def rest_btn():
 def main():
 	run = True
 	clock = pygame.time.Clock()
-	
+
 	get_grid()
 
 	while run:
@@ -122,4 +122,6 @@ def main():
 					run = False
 					main()
 
-main()
+
+if __name__ == '__main__':
+	main()
