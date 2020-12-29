@@ -60,7 +60,7 @@ def hover(rect):
         return True
     return False
 
-def show_grid(grid2):
+def show_grid(selection_grid):
 
 	for column in range(N_BLOCKS):
 		for row in range(N_BLOCKS):
@@ -72,7 +72,7 @@ def show_grid(grid2):
 			text_rect.x = int(x + (BLOCK_SIZE / 2) - text_rect.width / 2)
 			text_rect.y = int(y + (BLOCK_SIZE / 2) - text_rect.height / 2)
 
-			if grid2[row, column] == 1:
+			if selection_grid[row, column] == 1:
 				WIN.blit(CIRCLE, (x-6, y-3)) 
 			
 			if hover(text_rect):
@@ -106,7 +106,7 @@ def rest_btn():
 def main():
 	run = True
 	clock = pygame.time.Clock()
-	grid2 = np.zeros((N_BLOCKS, N_BLOCKS))
+	selection_grid = np.zeros((N_BLOCKS, N_BLOCKS))
 
 	get_grid()
 
@@ -115,7 +115,7 @@ def main():
 
 		WIN.blit(BG, (0, 0))
 
-		show_grid(grid2)
+		show_grid(selection_grid)
 		show_words()
 		restart_btn = rest_btn()
 
@@ -132,10 +132,10 @@ def main():
 				row = (pos[1]-6) // (BLOCK_SIZE + MARGIN)
 				
 				if row < N_BLOCKS and column < N_BLOCKS:
-					if grid2[row, column] == 1:
-						grid2[row, column] = 0
+					if selection_grid[row, column] == 1:
+						selection_grid[row, column] = 0
 					else:
-						grid2[row, column] = 1
+						selection_grid[row, column] = 1
 
 				if hover(restart_btn):
 					run = False
