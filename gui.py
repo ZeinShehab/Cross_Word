@@ -14,7 +14,6 @@ pygame.display .set_caption("Cross Word")
 # GLOBAL CONSTANTS
 BLOCK_SIZE = 20
 MARGIN = 15
-# Change to work in sync with grid.py width and height
 N_BLOCKS = options["size"]
 
 # GLOBAL VARIABLES
