@@ -151,12 +151,6 @@ class Grid:
             self.grid[cord[0], cord[1]] = let
 
     @staticmethod
-    def save_grid(grid, words, filename, mode):
-        f = open(filename, mode)
-        f.write(f"{grid} \n\n {words}")
-        f.close()
-
-    @staticmethod
     def save_grid_data(filename, mode, data):
         f = open(filename, mode)
         f.write(data)
