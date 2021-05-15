@@ -31,7 +31,8 @@ class Grid:
         self.tkn_pos = []
         self.pos = []
 
-    def get_grid(self):
+    @staticmethod
+    def get_grid():
         letters = []
         for _ in range(SIZE):
             for _ in range(SIZE):
@@ -42,7 +43,8 @@ class Grid:
     def format_grid(grid):
         return str(grid).replace("[", " ").replace("]", " ").replace("'", "")
 
-    def get_wrds(self):
+    @staticmethod
+    def get_wrds():
         word_list = []
         tkn_wrds = []
         chsn_wrds = []
