@@ -116,37 +116,24 @@ class Grid:
         # Adding orientation to position
         self.pos.append(str(orientation))
 
-        # Checking for collision with other words
-        if self.is_collide(wrd) and len(self.tkn_pos) > 1:
-            self.get_pos(wrd)                                           # Recall function if collides
+        if self.is_collide(wrd):                                        # Checking for collsion between words
+            self.get_pos(wrd)
         else:
             self.tkn_pos.append(self.pos)                               # Add pos to taken position
 
     def is_collide(self, wrd):
         collide = False
-        collisions = 0
-        for i in self.tkn_pos:
-            for j in i:
-                for k in self.pos:
-                    if type(k) != str:
 
-                        if k[0] == j[0] and k[1] == j[1]:                               # Checking if the words collide
-                            collisions += 1
+        for k in self.pos:
+            if type(k) != str:
+                if self.grid[k[0], k[1]] != " ":
+                    collide = True 
 
-                            if self.share_let(self.pos[len(self.pos)-1], i[len(i) - 1], wrd, k) and collisions == 1:
-                                collide = False
-                                # print("SHARE", wrd)
-                            else:
-                                collide = True 
+                    letter = wrd[self.pos.index(k)]
+                    if letter == self.grid[k[0], k[1]]:
+                        collide = False
 
         return collide
-
-    def share_let(self, dirc1, dirc2, word, pos):
-        letter = word[self.pos.index(pos)]                              # Getting letter of word at collision point
-        
-        if dirc1 != dirc2 and self.grid[pos[0], pos[1]] == letter:      # Checking if this letter matches with the grid
-            return True
-        return False
 
     def put_wrd(self, wrd, pos):
         for cord, let in zip(pos, wrd):
