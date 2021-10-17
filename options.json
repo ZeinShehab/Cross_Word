@@ -2,7 +2,7 @@
    {
         "size": 15,
         "numberOfWords": 10,
-        "difficulty": "medium",
+        "wordLength": "mixed",
         "wordFile": "words.txt",
         "fillGrid": false
     }
