@@ -2,10 +2,9 @@ import pygame
 import os
 import sys
 import numpy as np
-import json
 from grid import Grid
 
-options = json.load(open("options.json", "r"))[0]
+obj = Grid()
 
 pygame.init()
 pygame.font.init()
@@ -14,11 +13,11 @@ pygame.display .set_caption("Cross Word")
 # GLOBAL CONSTANTS
 BLOCK_SIZE = 20
 MARGIN = 15
-N_BLOCKS = options["size"]
+N_BLOCKS = obj.SIZE
 
 # GLOBAL VARIABLES
-GRID = []
-WORDS = []
+GRID = obj.grid
+WORDS = obj.words
 
 # GAME WINDOW
 WIDTH = (BLOCK_SIZE * N_BLOCKS) + (MARGIN * N_BLOCKS) + MARGIN + 300
@@ -52,7 +51,8 @@ WORD_FONT = pygame.font.Font(os.path.join(
 def get_grid():
     global GRID, WORDS
 
-    GRID, WORDS = Grid().main()
+    obj = Grid()
+    GRID, WORDS = obj.grid, obj.words
 
 def hover(rect):
     if rect.collidepoint(pygame.mouse.get_pos()):
@@ -122,6 +122,7 @@ def main():
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				run = False
 				pygame.quit()
 				sys.exit()
 
